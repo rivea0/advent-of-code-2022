@@ -1,15 +1,12 @@
 def parse(input_data):
     with open(input_data) as f:
         _id = 0
-        loads = {
-            _id: 0
-        }
+        loads = {_id: 0}
         for line in f.readlines():
             if line == '\n':
                 _id += 1
             if line.strip('\n').isdigit():
                 loads[_id] = loads.get(_id, 0) + int(line)
-
     return loads 
 
 
