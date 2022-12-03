@@ -23,6 +23,7 @@ def part1():
             total_score += RULES['winning_score']
         if corresponds[own_shape] == their_shape:
             total_score += RULES['draw_score']
+
     return total_score
 
 
@@ -41,4 +42,5 @@ def part2():
             # Reverse the RULES[shape_to_beat] to find the shape to lose
             own_shape = [key for key in RULES['shape_to_beat'] if their_shape == RULES['shape_to_beat'][key]][0]
             total_score += RULES['scores'][own_shape]
+
     return total_score
