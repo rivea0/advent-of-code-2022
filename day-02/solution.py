@@ -21,7 +21,7 @@ def part1():
         total_score += RULES['scores'][corresponds[own_shape]]
         if RULES['shape_to_beat'][their_shape] == corresponds[own_shape]:
             total_score += RULES['winning_score']
-        if corresponds[own_shape] == their_shape:
+        elif corresponds[own_shape] == their_shape:
             total_score += RULES['draw_score']
 
     return total_score
@@ -35,7 +35,7 @@ def part2():
         if strategy == 'Z': # To win
             own_shape = RULES['shape_to_beat'][their_shape]
             total_score += RULES['winning_score'] + RULES['scores'][own_shape]
-        if strategy == 'Y': # To draw
+        elif strategy == 'Y': # To draw
             own_shape = their_shape
             total_score += RULES['draw_score'] + RULES['scores'][own_shape] 
         elif strategy == 'X': # To lose
