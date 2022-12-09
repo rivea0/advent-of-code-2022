@@ -19,18 +19,20 @@ def is_edge(idx, row, rows):
             or (idx == 0 or idx == len(row) - 1))
 
 
+def check_tall_trees(trees, tree):
+    return [t for t in trees if int(t) >= int(tree)]
+
+
 def is_visible(above_trees, right_trees, below_trees, left_trees, tree):
-    return not [above_tree for above_tree in above_trees if int(above_tree) >= int(tree)] or \
-            not [right_tree for right_tree in right_trees if int(right_tree) >= int(tree)] or \
-            not [below_tree for below_tree in below_trees if int(below_tree) >= int(tree)] or \
-            not [left_tree for left_tree in left_trees if int(left_tree) >= int(tree)] 
+    return not check_tall_trees(above_trees, tree) or not check_tall_trees(right_trees, tree) or \
+            not check_tall_trees(below_trees, tree) or not check_tall_trees(left_trees, tree)
 
 
-def count_trees_to_see(tree, trees, count):
+def count_trees_to_see(trees, tree, count=0):
     for t in trees:
         if int(t) >= int(tree):
             count += 1
-            break 
+            break
         count += 1
     return count
 
@@ -38,15 +40,15 @@ def count_trees_to_see(tree, trees, count):
 def measure_viewing_distance(above, right, below, left, tree):
     above_count = below_count = left_count = right_count = 0
 
-    above_count = count_trees_to_see(tree, above[::-1], 0)
-    right_count = count_trees_to_see(tree, right, 0)
-    below_count = count_trees_to_see(tree, below, 0)
-    left_count = count_trees_to_see(tree, left[::-1], 0)
+    above_count = count_trees_to_see(above[::-1], tree)
+    right_count = count_trees_to_see(right, tree)
+    below_count = count_trees_to_see(below, tree)
+    left_count = count_trees_to_see(left[::-1], tree)
 
     return above_count * right_count * below_count * left_count
 
 
-def iterate(rows, for_visibility=False, for_scene=False):
+def iterate(rows, for_scene=False):
     num_visible_trees = 0
     max_scenic_score = 0
 
@@ -57,11 +59,11 @@ def iterate(rows, for_visibility=False, for_scene=False):
 
             above, right, below, left = find_trees_around(i, row, row_i, rows)
 
-            if is_visible(left, right, above, below, tree):
+            if is_visible(above, right, below, left, tree):
                 num_visible_trees += 1
 
             score =  measure_viewing_distance(above, right, below, left, tree)
             if score > max_scenic_score:
                 max_scenic_score = score
 
-    return num_visible_trees if for_visibility else max_scenic_score
+    return max_scenic_score if for_scene else num_visible_trees
